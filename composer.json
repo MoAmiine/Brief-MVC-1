@@ -1,0 +1,10 @@
+{
+    "name": "youcode/brief-mvc-1",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+
+    "require": {}
+}
