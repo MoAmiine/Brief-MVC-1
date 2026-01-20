@@ -1,12 +1,13 @@
 <?php 
 namespace App\Model;
 use App\Core\Database;
+use PDO;
 class User {
-    private string $nom;
-    private string $prenom;
-    private string $email;
-    private string $password;
-    private $db;
+    public string $Lastname;
+    public string $Firstname;
+    public string $email;
+    public string $password;
+    public $db;
 
     public function __construct()
     {
@@ -14,26 +15,26 @@ class User {
     }
 
 
-    public function getNom(): string
+    public function getLastname(): string
     {
-        return $this->nom;
+        return $this->Lastname;
     }
 
-    public function setNom(string $nom): self
+    public function setLastname(string $Lastname): self
     {
-        $this->nom = $nom;
+        $this->Lastname = $Lastname;
 
         return $this;
     }
 
-    public function getPrenom(): string
+    public function getFirstname(): string
     {
-        return $this->prenom;
+        return $this->Firstname;
     }
 
-    public function setPrenom(string $prenom): self
+    public function setFirstname(string $Firstname): self
     {
-        $this->prenom = $prenom;
+        $this->Firstname = $Firstname;
 
         return $this;
     }
@@ -66,11 +67,20 @@ class User {
         $query = 'INSERT INTO users(Firstname, Lastname, email, password) VALUES(:Firstname, :Lastname, :email, :password)';
         $stmt = $this->db->prepare($query);
         $stmt->execute([
-            'Firstname' => $this->prenom,
-            'Lastname' => $this->nom,
+            'Firstname' => $this->Firstname,
+            'Lastname' => $this->Lastname,
             'email' => $this->email,
             'password' => password_hash($this->password, PASSWORD_DEFAULT)
         ]);
         echo 'data saved';
     }
+
+    public function findUserByEmail(string $email){
+        $query = 'SELECT * FROM users where email = ?';
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$email]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, User::class);
+        return $stmt->fetch();
+    }
+
 }
