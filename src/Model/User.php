@@ -2,11 +2,15 @@
 namespace App\Model;
 use App\Core\Database;
 use PDO;
+use role;
+
 class User {
+    public string $id;
     public string $Lastname;
     public string $Firstname;
     public string $email;
     public string $password;
+    public role $role;
     public $db;
 
     public function __construct()
@@ -62,8 +66,30 @@ class User {
 
         return $this;
     }
+    public function getId(): string
+    {
+        return $this->id;
+    }
 
-    public function save(){
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getRole(): role
+    {
+        return $this->role;
+    }
+
+    public function setRole(role $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+        public function save(){
         $query = 'INSERT INTO users(Firstname, Lastname, email, password) VALUES(:Firstname, :Lastname, :email, :password)';
         $stmt = $this->db->prepare($query);
         $stmt->execute([
@@ -82,5 +108,4 @@ class User {
         $stmt->setFetchMode(PDO::FETCH_CLASS, User::class);
         return $stmt->fetch();
     }
-
 }
