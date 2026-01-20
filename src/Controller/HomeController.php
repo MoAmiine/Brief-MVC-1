@@ -1,7 +1,11 @@
 <?php 
 namespace App\Controller;
+use App\Model\Produit;
+
+
 class HomeController{
-    public function hello(){
-        echo 'hello';
-        }
+    private Produit $produit;
+    public function Catalogue(){
+           $this->produit->showAllProduits();
+}
 }
